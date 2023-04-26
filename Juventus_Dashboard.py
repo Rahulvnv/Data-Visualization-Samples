@@ -254,7 +254,7 @@ if(selected_viz_type=="Player Report"):
         axs["pitch"][2].set_title(selected_player + " Touch Zones Map", fontsize=30,color="white")
         axs["pitch"][1].legend(edgecolor='black', fontsize=12, loc='upper left', handlelength=5)
         axs["pitch"][0].legend(edgecolor='black', fontsize=12, loc='upper left', handlelength=5)
-        title = axs['title'].text(0.5, 1, selected_player + ' : Actions vs ' + opponent (made by @Rahulvn5)',
+        title = axs['title'].text(0.5, 1, selected_player + ' : Actions vs ' + opponent + ' (made by @Rahulvn5)',
                                   ha='center', va='center', fontsize=40, color='white', weight="bold")
 
         st.pyplot(fig, axs)
