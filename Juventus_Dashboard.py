@@ -224,7 +224,8 @@ if(selected_viz_type=="Player Report"):
         st.sidebar.header('Player Input Tab')
         selected_player = st.sidebar.selectbox('Player', players)
         hal = team_plot_data[team_plot_data["playerName"] == selected_player]
-        hal1 = passes[passes["playerName"] == selected_player]
+        passes1=passes[passes["matchId"]==matchId_giver(selected_match)]
+        hal1 = passes1[passes1["playerName"] == selected_player]
         pitch = mps.VerticalPitch(line_color="white", pitch_color="black", line_zorder=2, pitch_type='opta')
         fig, axs = pitch.grid(nrows=1, ncols=3, title_height=0.2, axis=False, grid_width=0.9, figheight=17)
         fig.set_facecolor("black")
