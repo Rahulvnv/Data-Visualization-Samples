@@ -23,7 +23,7 @@ def eventloader(path):
     return events
 df = pd.read_csv("Serie A Fixtures.csv")
 eventsdf=eventloader("test.bz2")
-xT = pd.read_csv("C:/Users/Rahul/OneDrive/Pictures/Juve vs Inter/xT_Grid.csv", header=None)
+xT = pd.read_csv("xT_Grid.csv", header=None)
 xT = np.array(xT)
 xT_rows, xT_cols = xT.shape
 passes=eventsdf[eventsdf["type"]=="Pass"]
@@ -335,8 +335,4 @@ if(selected_viz_type=="Match Report"):
                               team_plot_data["home_team"].unique()[0] + ' vs ' + team_plot_data["away_team"].unique()[
                                   0] + ' Match Report 22/23 (made by @Rahulvn5)',
                               ha='center', va='center', fontsize=40, color='white', weight="bold")
-    hlogo = Image.open("C:/Users/Rahul/Logos/Serie A teams/" + team_plot_data["home_team"].unique()[0] + ".png")
-    alogo = Image.open("C:/Users/Rahul/Logos/Serie A teams/" + team_plot_data["away_team"].unique()[0] + ".png")
-    add_image(hlogo, fig1, left=0.2, bottom=0.865, width=0.2, height=0.05)
-    add_image(alogo, fig1, left=0.6, bottom=0.865, width=0.2, height=0.05)
     st.pyplot(fig1, axs)
