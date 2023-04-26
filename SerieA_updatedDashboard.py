@@ -32,7 +32,7 @@ passes['start_zone_value'] = passes[['x1_bin', 'y1_bin']].apply(lambda x: xT[x[1
 passes['end_zone_value'] = passes[['x2_bin', 'y2_bin']].apply(lambda x: xT[x[1]][x[0]], axis=1)
 passes['xT'] = passes['end_zone_value'] - passes['start_zone_value']
 options=["Player Report","Match Report"]
-st.sidebar.header('Choose Viz Type')
+st.sidebar.header('Choose Viz Type- Player Report or Match Report')
 selected_viz_type = st.sidebar.selectbox('Viz',options)
 def count_special_character(string):
     # Declaring variable for special characters
