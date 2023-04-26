@@ -18,11 +18,11 @@ touches=["BallTouch"]
 @st.cache(suppress_st_warning=True)
 def eventloader(path):
     events=pd.read_pickle(path,compression='bz2')
-    df = pd.read_csv("C:/Users/Rahul/FA masterclass/data/Serie A Fixtures.csv")
+    df = pd.read_csv("Serie A Fixtures.csv")
     events= pd.merge(events, df[["home_team", "away_team", "matchId"]], on="matchId", how="left")
     return events
-df = pd.read_csv("C:/Users/Rahul/FA masterclass/data/Serie A Fixtures.csv")
-eventsdf=eventloader("C:/Users/Rahul/FA masterclass/data/Seriea_Events.pkl")
+df = pd.read_csv("Serie A Fixtures.csv")
+eventsdf=eventloader("test.bz2")
 xT = pd.read_csv("C:/Users/Rahul/OneDrive/Pictures/Juve vs Inter/xT_Grid.csv", header=None)
 xT = np.array(xT)
 xT_rows, xT_cols = xT.shape
