@@ -15,7 +15,7 @@ touches=["BallTouch"]
 @st.cache(suppress_st_warning=True)
 def eventloader(path):
     events=pd.read_pickle(path,compression='bz2')
-    df = pd.read_csv("Serie A Fixtures.csv")
+    df = pd.read_csv("Serie A fixtures.csv")
     events= pd.merge(events, df[["home_team", "away_team", "matchId"]], on="matchId", how="left")
     return events
 df = pd.read_csv("Serie A fixtures.csv")
