@@ -19,6 +19,7 @@ def eventloader(path):
     events= pd.merge(events, df[["home_team", "away_team", "matchId"]], on="matchId", how="left")
     return events
 df = pd.read_csv("Serie A fixtures.csv")
+df=df[(df["home_team"]=="Juventus") | (df["away_team"]=="Juventus")]
 eventsdf=eventloader("test.bz2")
 eventsdf=eventsdf[(eventsdf["home_team"]=='Juventus')|(eventsdf["away_team"]=='Juventus')]
 xT = pd.read_csv("xT_Grid.csv", header=None)
