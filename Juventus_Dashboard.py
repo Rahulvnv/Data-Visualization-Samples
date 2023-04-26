@@ -224,13 +224,11 @@ if(selected_viz_type=="Player Report"):
         st.sidebar.header('Player Input Tab')
         selected_player = st.sidebar.selectbox('Player', players)
         hal = team_plot_data[team_plot_data["playerName"] == selected_player]
-        passes1=passes[passes["matchId"]==matchId_giver(selected_match)]
-        hal1 = passes1[passes1["playerName"] == selected_player]
         pitch = mps.VerticalPitch(line_color="white", pitch_color="black", line_zorder=2, pitch_type='opta')
         fig, axs = pitch.grid(nrows=1, ncols=3, title_height=0.2, axis=False, grid_width=0.9, figheight=17)
         fig.set_facecolor("black")
-        pitch.arrows(hal1[hal1["xT"] > 0]["x"], hal1[hal1["xT"] > 0]["y"],
-                     hal1[hal1["xT"] > 0]["endX"], hal1[hal1["xT"] > 0]["endY"], color="#BF3EFF", ax=axs["pitch"][0])
+        pitch.arrows(hal[hal["type"] == 'Pass']["x"], hal[hal["type"] == 'Pass']["y"],
+                     hal[hal["type"] == 'Pass']["endX"], hal[hal["type"] == 'Pass']["endY"], color="#BF3EFF", ax=axs["pitch"][0])
         pitch.arrows(hal[hal["assist"] == True]["x"], hal[hal["assist"] == True]["y"],
                      hal[hal["assist"] == True]["endX"], hal[hal["assist"] == True]["endY"], color="cyan",
                      ax=axs["pitch"][0], label="Assist")
@@ -247,7 +245,7 @@ if(selected_viz_type=="Player Report"):
         hm = pitch.heatmap_positional(bs_heatmap1, ax=axs["pitch"][2], cmap='Reds', edgecolor="black")
         pitch.label_heatmap(bs_heatmap1, color="white", ha="center", va="center", backgroundcolor='0.5', ax=axs["pitch"][2],
                             str_format='{:.0%}', fontsize=30)
-        axs["pitch"][0].set_title(selected_player + " Passes with +ve xT", fontsize=30,color="white")
+        axs["pitch"][0].set_title(selected_player + " Passes ", fontsize=30,color="white")
         axs["pitch"][1].set_title(selected_player + " Shots & Def Actions", fontsize=30,color="white")
         axs["pitch"][2].set_title(selected_player + " Touch Zones Map", fontsize=30,color="white")
         axs["pitch"][1].legend(edgecolor='black', fontsize=12, loc='upper left', handlelength=5)
