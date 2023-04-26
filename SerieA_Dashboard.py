@@ -5,6 +5,7 @@ from mplsoccer import add_image
 from ast import literal_eval
 import numpy as np
 from matplotlib.colors import to_rgba
+from PIL import Image
 st.title("Serie A Dashboard 2022/23")
 shots=['MissedShots','SavedShot','ShotOnPost']
 goals=['Goal']
@@ -331,4 +332,8 @@ if(selected_viz_type=="Match Report"):
                               team_plot_data["home_team"].unique()[0] + ' vs ' + team_plot_data["away_team"].unique()[
                                   0] + ' Match Report 22/23 (made by @Rahulvn5)',
                               ha='center', va='center', fontsize=40, color='white', weight="bold")
+    hlogo = Image.open("/Logos/" + team_plot_data["home_team"].unique()[0] + ".png")
+    alogo = Image.open("/Logos/" + team_plot_data["away_team"].unique()[0] + ".png")
+    add_image(hlogo, fig1, left=0.2, bottom=0.865, width=0.2, height=0.05)
+    add_image(alogo, fig1, left=0.6, bottom=0.865, width=0.2, height=0.05)
     st.pyplot(fig1, axs)
