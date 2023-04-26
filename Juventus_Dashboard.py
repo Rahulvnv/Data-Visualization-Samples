@@ -219,6 +219,10 @@ if(selected_viz_type=="Player Report"):
                     a = matchDD[i]['value']
             return (a)
         team_plot_data = eventsdf[eventsdf["matchId"] == matchId_giver(selected_match)]
+        if(df[df['matchId']==matchId_giver(selected_match)]['home_team']=='Juventus']:
+           opponent=df[df['matchId']==matchId_giver(selected_match)]['away_team']
+        else:
+           opponent=df[df['matchId']==matchId_giver(selected_match)]['home_team']
         players = team_plot_data["playerName"].unique().tolist()
         players = [x for x in players if str(x) != 'nan']
         st.sidebar.header('Player Input Tab')
@@ -250,7 +254,7 @@ if(selected_viz_type=="Player Report"):
         axs["pitch"][2].set_title(selected_player + " Touch Zones Map", fontsize=30,color="white")
         axs["pitch"][1].legend(edgecolor='black', fontsize=12, loc='upper left', handlelength=5)
         axs["pitch"][0].legend(edgecolor='black', fontsize=12, loc='upper left', handlelength=5)
-        title = axs['title'].text(0.5, 1, selected_player + ' : Actions in 22/23 (made by @Rahulvn5)',
+        title = axs['title'].text(0.5, 1, selected_player + ' : Actions vs ' + opponent (made by @Rahulvn5)',
                                   ha='center', va='center', fontsize=40, color='white', weight="bold")
 
         st.pyplot(fig, axs)
