@@ -226,7 +226,7 @@ if(selected_viz_type=="Player Report"):
     hm = pitch.heatmap_positional(bs_heatmap1, ax=axs["pitch"][2], cmap='Reds', edgecolor="black")
     pitch.label_heatmap(bs_heatmap1, color="white", ha="center", va="center", backgroundcolor='0.5', ax=axs["pitch"][2],
                         str_format='{:.0%}', fontsize=30)
-    axs["pitch"][0].set_title(selected_player + "Passes with +ve xT", fontsize=30,color="white")
+    axs["pitch"][0].set_title(selected_player + " Passes with +ve xT", fontsize=30,color="white")
     axs["pitch"][1].set_title(selected_player + " Shots & Def Actions", fontsize=30,color="white")
     axs["pitch"][2].set_title(selected_player + " Touch Zones Map", fontsize=30,color="white")
     axs["pitch"][1].legend(edgecolor='black', fontsize=12, loc='upper left', handlelength=5)
