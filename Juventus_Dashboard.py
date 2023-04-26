@@ -219,10 +219,10 @@ if(selected_viz_type=="Player Report"):
                     a = matchDD[i]['value']
             return (a)
         team_plot_data = eventsdf[eventsdf["matchId"] == matchId_giver(selected_match)]
-        if(df[df['matchId']==matchId_giver(selected_match)]['home_team']=='Juventus']:
-           opponent=df[df['matchId']==matchId_giver(selected_match)]['away_team']
+        if(df[df['matchId']==matchId_giver(selected_match)]['home_team']=='Juventus']):
+            opponent=df[df['matchId']==matchId_giver(selected_match)]['away_team']
         else:
-           opponent=df[df['matchId']==matchId_giver(selected_match)]['home_team']
+            opponent=df[df['matchId']==matchId_giver(selected_match)]['home_team']
         players = team_plot_data["playerName"].unique().tolist()
         players = [x for x in players if str(x) != 'nan']
         st.sidebar.header('Player Input Tab')
