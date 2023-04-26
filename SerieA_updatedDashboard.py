@@ -249,6 +249,7 @@ if(selected_viz_type=="Match Report"):
             if (matchDD[i]['label'] == label):
                 a = matchDD[i]['value']
         return (a)
+    score=df[df["matchId"]==matchId_giver(selected_match)]
     team_plot_data = eventsdf[eventsdf["matchId"] == matchId_giver(selected_match)]
     print(team_plot_data)
     avgdfh = avg_dfgetter(team_plot_data, "h")
@@ -330,7 +331,7 @@ if(selected_viz_type=="Match Report"):
                                  color="white", fontsize=30)
     title = axs['title'].text(0.5, 1,
                               team_plot_data["home_team"].unique()[0] + ' vs ' + team_plot_data["away_team"].unique()[
-                                  0] + ' Match Report 22/23 (made by @Rahulvn5)'+'\n\n\n\n\n\n'+ df['score'].str.split(':',2).tolist()[0][0]+ ' - ' + df['score'].str.split(':',2).tolist()[0][1],
+                                  0] + ' Match Report 22/23 (made by @Rahulvn5)'+'\n\n\n\n\n\n'+ score['score'].str.split(':',2).tolist()[0][0]+ ' - ' + score['score'].str.split(':',2).tolist()[0][1],
                               ha='center', va='center', fontsize=40, color='white', weight="bold")
     hlogo = Image.open("Logos/" + team_plot_data["home_team"].unique()[0] + ".png")
     alogo = Image.open("Logos/" + team_plot_data["away_team"].unique()[0] + ".png")
