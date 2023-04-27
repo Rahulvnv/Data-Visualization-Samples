@@ -219,7 +219,7 @@ if(selected_viz_type=="Player Report"):
                     a = matchDD[i]['value']
             return (a)
         team_plot_data = eventsdf[eventsdf["matchId"] == matchId_giver(selected_match)]
-        if(selected_match.split('-',2)[0]=='Juventus'):
+        if(selected_match.split(' - ',2)[0]=='Juventus'):
             opponent=selected_match.split('-',2)[1]
         else:
             opponent=selected_match.split('-',2)[0]
