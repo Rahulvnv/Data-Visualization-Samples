@@ -245,7 +245,7 @@ if(selected_viz_type=="Player Report"):
                       edgecolor="black", s=300, ax=axs["pitch"][1], label="Shot")
         pitch.scatter(hal[hal["type"].isin(goals)]["x"], hal[hal["type"].isin(goals)]["y"], marker="football", s=300,
                       ax=axs["pitch"][1], label="Goal")
-        pitch.scatter(hal[hal["type"].isin(def_actions)]["x"], hal[hal["type"].isin(def_actions)]["y"], marker='*', s=300,
+        pitch.scatter(hal[hal["type"].isin(def_actions)]["x"], hal[hal["type"].isin(def_actions)]["y"], marker='*',color='cyan', s=300,
                       ax=axs["pitch"][1], label="Def Actions")
         bs_heatmap1 = pitch.bin_statistic_positional(hal["x"], hal["y"], positional='full', statistic='count',
                                                      normalize=True)
@@ -263,7 +263,7 @@ if(selected_viz_type=="Player Report"):
         add_image(plogo,fig, left=0.4, bottom=0.815, width=0.2, height=0.16)
         st.pyplot(fig, axs)
     elif(selected_player_report_type=="Full season Report"):
-        players = eventsdf["playerName"].unique().tolist()
+        players = eventsdf[eventsdf['teamId']==87]["playerName"].unique().tolist()
         players = [x for x in players if str(x) != 'nan']
         st.sidebar.header('Player Input Tab')
         selected_player = st.sidebar.selectbox('Player', players)
@@ -284,7 +284,7 @@ if(selected_viz_type=="Player Report"):
         pitch.scatter(hal[hal["type"].isin(goals)]["x"], hal[hal["type"].isin(goals)]["y"], marker="football", s=300,
                       ax=axs["pitch"][1], label="Goal")
         pitch.scatter(hal[hal["type"].isin(def_actions)]["x"], hal[hal["type"].isin(def_actions)]["y"], marker='*',
-                      s=300,
+                      s=300,color='cyan',
                       ax=axs["pitch"][1], label="Def Actions")
         bs_heatmap1 = pitch.bin_statistic_positional(hal["x"], hal["y"], positional='full', statistic='count',
                                                      normalize=True)
