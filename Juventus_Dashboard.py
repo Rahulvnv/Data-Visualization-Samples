@@ -256,7 +256,8 @@ if(selected_viz_type=="Player Report"):
         axs["pitch"][0].legend(edgecolor='black', fontsize=12, loc='upper left', handlelength=5)
         title = axs['title'].text(0.5, 1, selected_player + ' : Actions vs ' + opponent + ' (made by @Rahulvn5)',
                                   ha='center', va='center', fontsize=40, color='white', weight="bold")
-
+        plogo = Image.open("Logos/" + selected_player + ".png")
+        add_image(plogo,fig, left=0.4, bottom=0.815, width=0.2, height=0.16)
         st.pyplot(fig, axs)
     elif(selected_player_report_type=="Full season Report"):
         players = eventsdf["playerName"].unique().tolist()
@@ -295,7 +296,8 @@ if(selected_viz_type=="Player Report"):
         axs["pitch"][0].legend(edgecolor='black', fontsize=12, loc='upper left', handlelength=5)
         title = axs['title'].text(0.5, 1, selected_player + ' : Actions in 22/23 (made by @Rahulvn5)',
                                   ha='center', va='center', fontsize=40, color='white', weight="bold")
-
+        plogo = Image.open("Logos/" + selected_player + ".png")
+        add_image(plogo,fig, left=0.4, bottom=0.815, width=0.2, height=0.16)
         st.pyplot(fig, axs)
 
 if(selected_viz_type=="Match Report"):
