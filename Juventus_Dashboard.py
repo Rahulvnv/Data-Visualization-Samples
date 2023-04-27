@@ -221,9 +221,12 @@ if(selected_viz_type=="Player Report"):
         team_plot_data = eventsdf[eventsdf["matchId"] == matchId_giver(selected_match)]
         if(selected_match.split(' - ',2)[0]=='Juventus'):
             opponent=selected_match.split('-',2)[1]
+            tpdata=team_plot_data[team_plot_data['h_a']=='h']
+            players = tpdata["playerName"].unique().tolist()
         else:
             opponent=selected_match.split('-',2)[0]
-        players = team_plot_data["playerName"].unique().tolist()
+            tpdata=team_plot_data[team_plot_data['h_a']=='a']
+            players = tpdata["playerName"].unique().tolist()
         players = [x for x in players if str(x) != 'nan']
         st.sidebar.header('Player Input Tab')
         selected_player = st.sidebar.selectbox('Player', players)
