@@ -221,14 +221,17 @@ if(selected_viz_type=="Player Report"):
                   ax=axs["pitch"][1], label="Goal")
     pitch.scatter(hal[hal["type"].isin(def_actions)]["x"], hal[hal["type"].isin(def_actions)]["y"], marker='*', s=300,
                   ax=axs["pitch"][1], label="Def Actions")
-    bs_heatmap1 = pitch.bin_statistic_positional(hal["x"], hal["y"], positional='full', statistic='count',
-                                                 normalize=True)
-    hm = pitch.heatmap_positional(bs_heatmap1, ax=axs["pitch"][2], cmap='Reds', edgecolor="black")
-    pitch.label_heatmap(bs_heatmap1, color="white", ha="center", va="center", backgroundcolor='0.5', ax=axs["pitch"][2],
-                        str_format='{:.0%}', fontsize=30)
+    bins=(6,4)
+    bs_heatmap1 = pitch.bin_statistic(hal[hal["type"]=="Pass"]["x"], hal[hal["type"]=="Pass"]["y"], statistic='count', bins=bins)
+    hm = pitch.heatmap(bs_heatmap1, ax=axs["pitch"][2], cmap='Blues')
+    # plot the pass flow map with a single color ('black') and length of the arrow (5)
+    fm = pitch.flow(hal[hal["type"]=="Pass"]["x"],hal[hal["type"]=="Pass"]["y"],
+                hal[hal["type"]=="Pass"]["endX"],hal[hal["type"]=="Pass"]["endY"],
+                color='black', arrow_type='same',
+                arrow_length=5, bins=bins, ax=axs["pitch"][2])
     axs["pitch"][0].set_title(selected_player + " Passes with +ve xT", fontsize=30,color="white")
     axs["pitch"][1].set_title(selected_player + " Shots & Def Actions", fontsize=30,color="white")
-    axs["pitch"][2].set_title(selected_player + " Touch Zones Map", fontsize=30,color="white")
+    axs["pitch"][2].set_title(selected_player + " Action Flow Map" + "\n (Dark area=Max received zone, Arrow=Direction of next action)", fontsize=30,color="white")
     axs["pitch"][1].legend(edgecolor='black', fontsize=12, loc='upper left', handlelength=5)
     axs["pitch"][0].legend(edgecolor='black', fontsize=12, loc='upper left', handlelength=5)
     title = axs['title'].text(0.5, 1, selected_player + ' : Actions in 22/23 (made by @Rahulvn5)',
