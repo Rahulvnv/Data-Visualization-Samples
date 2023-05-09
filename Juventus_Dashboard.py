@@ -249,7 +249,7 @@ if(selected_viz_type=="Player Report"):
                       ax=axs["pitch"][1], label="Def Actions")
         bins=(6,4)
         bs_heatmap1 = pitch.bin_statistic(hal[hal["type"]=="Pass"]["x"], hal[hal["type"]=="Pass"]["y"], statistic='count', bins=bins)
-        hm = pitch.heatmap(bs_heatmap1, ax=axs["pitch"][2], cmap='Blues')
+        hm = pitch.heatmap(bs_heatmap1, ax=axs["pitch"][2], cmap='Blues',edgecolor='black')
         # plot the pass flow map with a single color ('black') and length of the arrow (5)
         fm = pitch.flow(hal[hal["type"]=="Pass"]["x"],hal[hal["type"]=="Pass"]["y"],
                 hal[hal["type"]=="Pass"]["endX"],hal[hal["type"]=="Pass"]["endY"],
