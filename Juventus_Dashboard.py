@@ -231,7 +231,7 @@ if(selected_viz_type=="Player Report"):
         st.sidebar.header('Player Input Tab')
         selected_player = st.sidebar.selectbox('Player', players)
         hal = team_plot_data[team_plot_data["playerName"] == selected_player]
-        pitch = mps.VerticalPitch(line_color="white", pitch_color="black", line_zorder=2, pitch_type='opta')
+        pitch = mps.VerticalPitch(line_color="yellow", pitch_color="black", line_zorder=2, pitch_type='opta')
         fig, axs = pitch.grid(nrows=1, ncols=3, title_height=0.2, axis=False, grid_width=0.9, figheight=17)
         fig.set_facecolor("black")
         pitch.arrows(hal[hal["type"] == 'Pass']["x"], hal[hal["type"] == 'Pass']["y"],
@@ -272,7 +272,7 @@ if(selected_viz_type=="Player Report"):
         selected_player = st.sidebar.selectbox('Player', players)
         hal = eventsdf[eventsdf["playerName"] == selected_player]
         hal1 = passes[passes["playerName"] == selected_player]
-        pitch = mps.VerticalPitch(line_color="white", pitch_color="black", line_zorder=2, pitch_type='opta')
+        pitch = mps.VerticalPitch(line_color="yellow", pitch_color="black", line_zorder=2, pitch_type='opta')
         fig, axs = pitch.grid(nrows=1, ncols=3, title_height=0.2, axis=False, grid_width=0.9, figheight=17)
         fig.set_facecolor("black")
         pitch.arrows(hal1[hal1["xT"] > 0]["x"], hal1[hal1["xT"] > 0]["y"],
@@ -291,7 +291,7 @@ if(selected_viz_type=="Player Report"):
                       ax=axs["pitch"][1], label="Def Actions")
         bins=(6,4)
         bs_heatmap1 = pitch.bin_statistic(hal[hal["type"]=="Pass"]["x"], hal[hal["type"]=="Pass"]["y"], statistic='count', bins=bins)
-        hm = pitch.heatmap(bs_heatmap1, ax=axs["pitch"][2], cmap='Blues')
+        hm = pitch.heatmap(bs_heatmap1, ax=axs["pitch"][2], cmap='Blues',edgecolor="black)
         # plot the pass flow map with a single color ('black') and length of the arrow (5)
         fm = pitch.flow(hal[hal["type"]=="Pass"]["x"],hal[hal["type"]=="Pass"]["y"],
                 hal[hal["type"]=="Pass"]["endX"],hal[hal["type"]=="Pass"]["endY"],
