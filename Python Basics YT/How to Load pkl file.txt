@@ -1,1 +1,7 @@
-
+The file for BVB Events is in pkl format unlike the csv type as csv files that are big
+are generally converted to Pickle (pkl) file format.
+Do not worry, all you have to do is do the following steps:
+import pandas as pd
+data=pd.read_pickle('Pickle_file_you_want_to_read.pkl)
+Then you will have the File like you saw in the Video
+If you want to save it to csv then just use data.to_csv('My_csv_file.csv')
