@@ -166,7 +166,7 @@ passes['y2_bin'] = pd.cut(passes['endY'], bins=xT_rows, labels=False)
 passes['start_zone_value'] = passes[['x1_bin', 'y1_bin']].apply(lambda x: xT[x[1]][x[0]], axis=1)
 passes['end_zone_value'] = passes[['x2_bin', 'y2_bin']].apply(lambda x: xT[x[1]][x[0]], axis=1)
 passes['xT'] = passes['end_zone_value'] - passes['start_zone_value']
-passes=passes.append(carr)
+passes=pd.concat([passes,carr])
 options=["Match Report",'Player Report']
 st.sidebar.header('Choose Viz Type- Player Report,Match Report')
 selected_viz_type = st.sidebar.selectbox('Viz',options)
@@ -568,7 +568,7 @@ if(selected_viz_type=="Player Report"):
         eves=hal[hal['matchId']==i]
         mins=mins+eves['minute'].max()
     hal2=carr[carr['playerName']==selected_player]
-    hal3=hal1.append(hal2)
+    hal3=pd.concat([hal1,hal2])
     pitch = mps.VerticalPitch(line_color="white", pitch_color="black", line_zorder=2, pitch_type='opta')
     fig, axs = pitch.grid(nrows=2, ncols=3, title_height=0.1, axis=False, grid_width=1, figheight=30)
     pitch.lines(0, 100, 100, 100, ax=axs['pitch'][0][0], color='black')
