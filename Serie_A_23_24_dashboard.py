@@ -458,8 +458,7 @@ def match_report(events, shotdata, hlogo, alogo, games1):
     pitch.arrows(kp[kp['h_a'] == 'a']['x'], kp[kp['h_a'] == 'a']['y'], kp[kp['h_a'] == 'a']['endX'],
                  kp[kp['h_a'] == 'a']['endY'], color='#00FF00', ax=axs1["pitch"][1][1])
 
-    title = axs1['title'].text(0.5, 1, '\n\n\n' + games1['score'].str.split(':', 2).tolist()[0][0] + ' - ' +
-                               games1['score'].str.split(':', 2).tolist()[0][1],
+    title = axs1['title'].text(0.5, 1, '\n\n\n' + str(games1['score']),
                                ha='center', va='center', fontsize=40, color='white', weight="bold")
     add_image(hlogo, fig1, left=0.2, bottom=0.865, width=0.2, height=0.08)
     add_image(alogo, fig1, left=0.6, bottom=0.865, width=0.2, height=0.08)
