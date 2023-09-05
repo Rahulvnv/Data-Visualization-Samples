@@ -7,6 +7,7 @@ from mplsoccer import add_image
 from ast import literal_eval
 import numpy as np
 from matplotlib.colors import to_rgba
+import termcolor
 from termcolor import colored
 from mplsoccer import Radar, FontManager
 st.title("Serie A Dashboard 2023/24")
