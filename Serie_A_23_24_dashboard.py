@@ -200,7 +200,7 @@ def count_special_character(string):
 def lineup_getter(events_df,k):
     test1=events_df[events_df["type"]=="FormationSet"]
     test2=test1[(test1["h_a"]==k)]
-    x=pd.DataFrame(literal_eval(test2.iloc[0]["qualifiers"]))
+    x=pd.DataFrame(test2.iloc[0]["qualifiers"])
     list1=str.split(x[x["type"]=="InvolvedPlayers"]["value"].tolist()[0],',',11)[:11]
     list2=[]
     for i in range(len(list1)):
@@ -208,7 +208,7 @@ def lineup_getter(events_df,k):
         list2.append(plyr)
     list3=[]
     for i in range(len(test2)):
-        x=pd.DataFrame(literal_eval(test2.iloc[i]["qualifiers"]))
+        x=pd.DataFrame(test2.iloc[i]["qualifiers"])
         list1=[]
         list1=str.split(x[x["type"]=="InvolvedPlayers"]["value"].tolist()[0],',',11)[:11]
         list2=[]
@@ -221,7 +221,7 @@ def lineup_getter(events_df,k):
 def avg_dfgetter(events_df, k):
     test1 = events_df[events_df["type"] == "FormationSet"]
     test2 = test1[(test1["h_a"] ==k)]
-    x = pd.DataFrame(literal_eval(test2.iloc[0]["qualifiers"]))
+    x = pd.DataFrame(test2.iloc[0]["qualifiers"])
     list1 = str.split(x[x["type"] == "InvolvedPlayers"]["value"].tolist()[0], ',', 11)[:11]
     list4 = str.split(x[x["type"] == "JerseyNumber"]["value"].tolist()[0], ',',
                       count_special_character(x[x["type"] == "JerseyNumber"]["value"].tolist()[0]))
@@ -239,7 +239,7 @@ def avg_dfgetter(events_df, k):
         list2.append(plyr)
     list3 = []
     for i in range(len(test2)):
-        x = pd.DataFrame(literal_eval(test2.iloc[i]["qualifiers"]))
+        x = pd.DataFrame(test2.iloc[i]["qualifiers"])
         list1 = []
         list1 = str.split(x[x["type"] == "InvolvedPlayers"]["value"].tolist()[0], ',', 11)[:11]
         list2 = []
@@ -270,7 +270,7 @@ def avg_dfgetter(events_df, k):
 def pass_network_dfgetter(events_df,k):
     test1=events_df[events_df["type"]=="FormationSet"]
     test2=test1[(test1["h_a"]==k)]
-    x=pd.DataFrame(literal_eval(test2.iloc[0]["qualifiers"]))
+    x=pd.DataFrame(test2.iloc[0]["qualifiers"])
     list1=str.split(x[x["type"]=="InvolvedPlayers"]["value"].tolist()[0],',',11)[:11]
     list2=[]
     for i in range(len(list1)):
@@ -278,7 +278,7 @@ def pass_network_dfgetter(events_df,k):
         list2.append(plyr)
     list3=[]
     for i in range(len(test2)):
-        x=pd.DataFrame(literal_eval(test2.iloc[i]["qualifiers"]))
+        x=pd.DataFrame(test2.iloc[i]["qualifiers"])
         list1=[]
         list1=str.split(x[x["type"]=="InvolvedPlayers"]["value"].tolist()[0],',',11)[:11]
         list2=[]
