@@ -554,7 +554,7 @@ if(selected_viz_type=="Player Report"):
         team=hal1.iloc[0]['home_team']
     else:
         team = hal1.iloc[0]['away_team']
-    mids=events_df['matchId'].unique().tolist()
+    mids=eventsdf['matchId'].unique().tolist()
     mins=0
     for i in mids:
         eves=hal[hal['matchId']==i]
