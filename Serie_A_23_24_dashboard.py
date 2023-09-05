@@ -357,7 +357,6 @@ def match_report(events, shotdata, hlogo, alogo, games1):
 
     fm_rubik = FontManager(('https://github.com/google/fonts/blob/main/ofl/rubikmonoone/'
                             'RubikMonoOne-Regular.ttf?raw=true'))
-    zones = pd.read_excel("C:/Users/Rahul/Pictures/Juve Event Data/Zones_map.xlsx")
     pmergehsize = pmergeh.groupby(["playerName"]).agg({"number_pass": 'sum'}).sort_values(by='number_pass',
                                                                                           ascending=False)
     pmergeasize = pmergea.groupby(["playerName"]).agg({"number_pass": 'sum'}).sort_values(by='number_pass',
