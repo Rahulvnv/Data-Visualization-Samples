@@ -424,14 +424,6 @@ def match_report(events, shotdata, hlogo, alogo, games1):
                    ax=axs1["pitch"][0][1], color="red")
     shotdatah = shotdata[shotdata['h_a'] == 'h']
     shotdataa = shotdata[shotdata['h_a'] == 'a']
-    txt = axs3["pitch"][0].text(x=30, y=50, s=' (xG = ' + str(shotdatah["expectedGoals"].sum().round(2)) + ')',
-                                size=20,
-                                font=fm_rubik.prop, color='white',
-                                va='center', ha='center')
-    txt = axs3["pitch"][0].text(x=70, y=50, s=' (xG = ' + str(shotdataa["expectedGoals"].sum().round(2)) + ')',
-                                size=20,
-                                font=fm_rubik.prop, color='white',
-                                va='center', ha='center')
     pitch3.scatter((100 - shotdatah[shotdatah["type"].isin(shots)]["x"]),
                    100 - (shotdatah[shotdatah["type"].isin(shots)]["y"]),
                    s=500, alpha=0.7,
