@@ -3,7 +3,6 @@ import mplsoccer as mps
 import pandas as pd
 from PIL import Image
 from urllib.request import urlopen
-import plotly.graph_objects as go
 from mplsoccer import add_image
 from ast import literal_eval
 import numpy as np
