@@ -7,8 +7,6 @@ from mplsoccer import add_image
 from ast import literal_eval
 import numpy as np
 from matplotlib.colors import to_rgba
-import termcolor
-from termcolor import colored
 from mplsoccer import Radar, FontManager
 st.title("Serie A Dashboard 2023/24")
 shots=['MissedShots','SavedShot','ShotOnPost']
@@ -355,8 +353,7 @@ def match_report(events, shotdata, hlogo, alogo, games1):
     eventsh = passes[passes["h_a"] == "h"]
     eventsa = passes[passes["h_a"] == "a"]
     
-    from termcolor import colored
-    from mplsoccer import Radar, FontManager
+    
 
     fm_rubik = FontManager(('https://github.com/google/fonts/blob/main/ofl/rubikmonoone/'
                             'RubikMonoOne-Regular.ttf?raw=true'))
