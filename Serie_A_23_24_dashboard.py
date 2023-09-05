@@ -1,7 +1,6 @@
 import streamlit as st
 import mplsoccer as mps
 import pandas as pd
-import plotly.express as px
 from PIL import Image
 from urllib.request import urlopen
 import plotly.graph_objects as go
