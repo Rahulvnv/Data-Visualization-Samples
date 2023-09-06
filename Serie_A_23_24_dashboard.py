@@ -401,7 +401,7 @@ if(selected_viz_type=="Player Report"):
     axs["pitch"][0][0].set_title('Progressive Passes',color='white',weight='bold',size=15)
     axs["pitch"][1][0].set_title('Actions Convex Hull',color='white',weight='bold',size=15) 
     axs["pitch"][1][1].set_title('Post Recovery Passes and \nDef Actions Heatmap',color='white',weight='bold',size=15) 
-    axs['title'].text(0.1,0.6,selected_player+ " Player report for 23/24 (made by:@Rahulvn5)",color="white",weight='bold',fontsize=30) 
+    axs['title'].text(0.07,0.6,selected_player+ " Player report for 23/24 (made by:@Rahulvn5)",color="white",weight='bold',fontsize=30) 
     st.pyplot(fig, axs)
 if(selected_viz_type=="Match Report"):
     matchDD = [{'label': row["home_team"] + " - " + row["away_team"],
@@ -412,19 +412,97 @@ if(selected_viz_type=="Match Report"):
         list1.append(matchDD[i]['label'])
     st.sidebar.header('Match Input Tab')
     selected_match = st.sidebar.selectbox('Match', list1)
-
-
     def matchId_giver(label):
         for i in range(len(matchDD)):
             if (matchDD[i]['label'] == label):
                 a = matchDD[i]['value']
         return (a)
     team_plot_data = eventsdf[eventsdf["matchId"] == matchId_giver(selected_match)]
-    shotdata=team_plot_data[team_plot_data['type'].isin(shots+goals)]
-    games1=df[df['matchId']==matchId_giver(selected_match)]
-    hlogo = Image.open("Logos/" + team_plot_data["home_team"].unique()[0] + ".png")
-    alogo = Image.open("Logos/" + team_plot_data["away_team"].unique()[0] + ".png")
-    mreport=match_report(team_plot_data, shotdata, hlogo, alogo, games1)
+    avgdfh = avg_dfgetter(team_plot_data, "h")
+    avgdfa = avg_dfgetter(team_plot_data, "a")
+    pmergeh = pass_network_dfgetter(team_plot_data, "h")
+    pmergea = pass_network_dfgetter(team_plot_data, "a")
+    lineuph = lineup_getter(team_plot_data, "h")
+    lineupa = lineup_getter(team_plot_data, "a")
+    passes = team_plot_data[team_plot_data["type"] == "Pass"]
+    eventsh = passes[passes["h_a"] == "h"]
+    eventsa = passes[passes["h_a"] == "a"]
+    pitch = mps.VerticalPitch(line_color="white", pitch_color="black", line_zorder=2, pitch_type='opta')
+    fig1, axs = pitch.grid(nrows=2, ncols=3, title_height=0.1, axis=False, grid_width=0.9, figheight=30)
+    fig1.set_facecolor("black")
+    MIN_TRANSPARENCY = 0.3
+
+    pitch.arrows(eventsh[(eventsh["type"] == "Pass") &(eventsh["endX"]>eventsh["x"])]["x"], eventsh[(eventsh["type"] == "Pass") &(eventsh["endX"]>eventsh["x"])]["y"],
+                 eventsh[(eventsh["type"] == "Pass") &(eventsh["endX"]>eventsh["x"])]["endX"], eventsh[(eventsh["type"] == "Pass") &(eventsh["endX"]>eventsh["x"])]["endY"],
+                 color="#BF3EFF", ax=axs["pitch"][0][0])
+    pitch.arrows(eventsa[(eventsa["type"] == "Pass") &(eventsa["endX"]>eventsa["x"])]["x"], eventsa[(eventsa["type"] == "Pass") &(eventsa["endX"]>eventsa["x"])]["y"],
+                 eventsa[(eventsa["type"] == "Pass") &(eventsa["endX"]>eventsa["x"])]["endX"], eventsa[(eventsa["type"] == "Pass") &(eventsa["endX"]>eventsa["x"])]["endY"],
+                 color="#BF3EFF", ax=axs["pitch"][1][0])
+    bins = (6, 4)
+    bs_heatmap1 = pitch.bin_statistic(eventsh[eventsh["type"] == "Pass"]["x"], eventsh[eventsh["type"] == "Pass"]["y"],
+                                      statistic='count', bins=bins)
+    hm = pitch.heatmap(bs_heatmap1, ax=axs["pitch"][0][1], cmap='Blues')
+    # plot the pass flow map with a single color ('black') and length of the arrow (5)
+    fm = pitch.flow(eventsh[eventsh["type"] == "Pass"]["x"], eventsh[eventsh["type"] == "Pass"]["y"],
+                    eventsh[eventsh["type"] == "Pass"]["endX"], eventsh[eventsh["type"] == "Pass"]["endY"],
+                    color='black', arrow_type='same',
+                    arrow_length=5, bins=bins, ax=axs["pitch"][0][1])
+    bs_heatmap2 = pitch.bin_statistic(eventsa[eventsa["type"] == "Pass"]["x"], eventsa[eventsa["type"] == "Pass"]["y"],
+                                      statistic='count', bins=bins)
+    hm = pitch.heatmap(bs_heatmap2, ax=axs["pitch"][1][1], cmap='Blues')
+    # plot the pass flow map with a single color ('black') and length of the arrow (5)
+    fm = pitch.flow(eventsa[eventsa["type"] == "Pass"]["x"], eventsa[eventsa["type"] == "Pass"]["y"],
+                    eventsa[eventsa["type"] == "Pass"]["endX"], eventsa[eventsa["type"] == "Pass"]["endY"],
+                    color='black', arrow_type='same',
+                    arrow_length=5, bins=bins, ax=axs["pitch"][1][1])
+    ws = pmergeh["width"].values.tolist()
+    ws = [i * 10 for i in ws]
+    pitch.lines(pmergeh["x"], pmergeh["y"], pmergeh["endx"], pmergeh["endy"], lw=ws, color=pmergeh['alpha'], zorder=1,
+                ax=axs["pitch"][0][2])
+    ws1 = pmergea["width"].values.tolist()
+    ws1 = [i * 10 for i in ws1]
+    pitch.lines(pmergea["x"], pmergea["y"], pmergea["endx"], pmergea["endy"], lw=ws1, color=pmergea['alpha'], zorder=1,
+                ax=axs["pitch"][1][2])
+    for i in range(len(lineuph)):
+        pitch.scatter(avgdfh[avgdfh["playerName"] == lineuph[i]]["x"],
+                      avgdfh[avgdfh["playerName"] == lineuph[i]]["y"], s=1000, color="red", ax=axs["pitch"][0][2])
+        try:
+            pitch.annotate(lineuph[i].split(" ", 1)[1], xy=(
+                avgdfh[avgdfh["playerName"] == lineuph[i]]["x"] - 2, avgdfh[avgdfh["playerName"] == lineuph[i]]["y"]),
+                           c='white', va='center', ha='center', ax=axs["pitch"][0][2], fontsize=22)
+        except:
+            pitch.annotate(lineuph[i], xy=(
+                avgdfh[avgdfh["playerName"] == lineuph[i]]["x"] - 2, avgdfh[avgdfh["playerName"] == lineuph[i]]["y"]),
+                           c='white', va='center', ha='center', ax=axs["pitch"][0][2], fontsize=22)
+    for i in range(len(lineupa)):
+        pitch.scatter(avgdfa[avgdfa["playerName"] == lineupa[i]]["x"],
+                      avgdfa[avgdfa["playerName"] == lineupa[i]]["y"], s=1000, color="red", ax=axs["pitch"][1][2])
+        try:
+            pitch.annotate(lineupa[i].split(" ", 1)[1], xy=(
+                avgdfa[avgdfa["playerName"] == lineupa[i]]["x"] - 3, avgdfa[avgdfa["playerName"] == lineupa[i]]["y"]),
+                           c='white', va='center', ha='center', ax=axs["pitch"][1][2], fontsize=22)
+        except:
+            pitch.annotate(lineupa[i], xy=(
+                avgdfa[avgdfa["playerName"] == lineupa[i]]["x"] - 3, avgdfa[avgdfa["playerName"] == lineupa[i]]["y"]),
+                           c='white', va='center', ha='center', ax=axs["pitch"][1][2], fontsize=22)
+    axs["pitch"][0][0].set_title(team_plot_data["home_team"].unique()[0] + " Progressive Passes", color="white", fontsize=30)
+    axs["pitch"][0][1].set_title(team_plot_data["home_team"].unique()[0] + " Pass Flow Plot", color="white",
+                                 fontsize=30)
+    axs["pitch"][0][2].set_title(team_plot_data["home_team"].unique()[0] + " \nPlayers Avg. Positions & Network",
+                                 color="white", fontsize=30)
+    axs["pitch"][1][0].set_title(team_plot_data["away_team"].unique()[0] + " Progressive Passes", color="white", fontsize=30)
+    axs["pitch"][1][1].set_title(team_plot_data["away_team"].unique()[0] + " Pass Flow Plot", color="white",
+                                 fontsize=30)
+    axs["pitch"][1][2].set_title(team_plot_data["away_team"].unique()[0] + " Players Avg. Positions & Network",
+                                 color="white", fontsize=30)
+    title = axs['title'].text(0.5, 1,
+                              team_plot_data["home_team"].unique()[0] + team_plot_data['ftScore'].unique().tolist()[0].split(':',2)[0]+ '-' +team_plot_data['ftScore'].unique().tolist()[0].split(':',2)[1] ' vs ' + team_plot_data["away_team"].unique()[
+                                  0] + ' Match Report 23/24 (made by @Rahulvn5)',
+                              ha='center', va='center', fontsize=40, color='white', weight="bold")
+    hlogo = Image.open("C:/Users/Rahul/Logos/Serie A teams/" + team_plot_data["home_team"].unique()[0] + ".png")
+    alogo = Image.open("C:/Users/Rahul/Logos/Serie A teams/" + team_plot_data["away_team"].unique()[0] + ".png")
+    add_image(hlogo, fig1, left=0.2, bottom=0.865, width=0.2, height=0.05)
+    add_image(alogo, fig1, left=0.6, bottom=0.865, width=0.2, height=0.05)
     st.pyplot(mreport)
 
 
