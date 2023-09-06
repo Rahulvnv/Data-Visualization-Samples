@@ -151,7 +151,10 @@ def insert_ball_carries(events_df, min_carry_length=3, max_carry_length=60, min_
         events_out = pd.concat([events_out, match_carries])
 
     return events_out
-carr=insert_ball_carries(eventsdf)
+def carryloader(path):
+    carries=pd.read_pickle(path,compression='bz2')
+    return carries
+carr=carryloader("test.bz2")
 carr['x1_bin'] = pd.cut(carr['x'], bins=xT_cols, labels=False)
 carr['y1_bin'] = pd.cut(carr['y'], bins=xT_rows, labels=False)
 carr['x2_bin'] = pd.cut(carr['endX'], bins=xT_cols, labels=False)
