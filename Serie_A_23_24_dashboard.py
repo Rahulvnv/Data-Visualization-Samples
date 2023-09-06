@@ -358,7 +358,7 @@ if(selected_viz_type=="Player Report"):
     pitch=mps.VerticalPitch(line_color="white", pitch_color="black", line_zorder=2, pitch_type='opta') 
     fig, axs = pitch.grid(nrows=2, ncols=3, title_height=0.1, axis=False, grid_width=0.9, figheight=17)
     fig.set_facecolor("black")
-    pitch.arrows(hal1[hal1['endX']>hal1['x']]['x'],hal1[hal1['endX']>hal1['x']]['y'],hal1[hal1['endX']>hal1['x']]['endX'],hal1[hal1['endX']>hal1['x']]['endY'],color='#C1FFC1",ax=axs['pitch'][0][0])
+    pitch.arrows(hal1[hal1['endX']>hal1['x']]['x'],hal1[hal1['endX']>hal1['x']]['y'],hal1[hal1['endX']>hal1['x']]['endX'],hal1[hal1['endX']>hal1['x']]['endY'],color="#C1FFC1",ax=axs['pitch'][0][0])
     pitch.lines(hal2[hal2['endX']>hal2['x']]['x'],hal2[hal2['endX']>hal2['x']]['y'],hal2[hal2['endX']>hal2['x']]['endX'],hal2[hal2['endX']>hal2['x']]['endY'],comet=True,color='#FF1493',ax=axs['pitch'][0][1])
     shotdata=hal[hal["type"].isin(shots+goals)]
     pitch.scatter(shotdata[shotdata["type"].isin(shots)]["x"],shotdata[shotdata["type"].isin(shots)]["y"],s=600,ax=axs["pitch"][0][2],color="red",edgecolor="black",label="Shot")
