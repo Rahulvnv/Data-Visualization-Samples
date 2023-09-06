@@ -15,13 +15,12 @@ goals=['Goal']
 def_actions=['BallRecovery','Clearance','Tackle','Challenge','Interception','BlockedPass']
 takeon=["TakeOn"]
 touches=["BallTouch"]
-@st.cache(suppress_st_warning=True,ttl=360)
+@st.cache(suppress_st_warning=True,ttl=360,max_entries=10)
 def eventloader(path):
     events=pd.read_pickle(path,compression='bz2')
     df = pd.read_csv("Serie A fixtures.csv")
     return events
 df = pd.read_csv("Serie A fixtures.csv")
-eventsdf=eventloader("test.bz2")
 xT = pd.read_csv("xT_Grid.csv", header=None)
 xT = np.array(xT)
 xT_rows, xT_cols = xT.shape
@@ -210,6 +209,7 @@ def pass_network_dfgetter(events_df,k):
     passmerge['alpha'] = color.tolist()
     return passmerge
 if(selected_viz_type=="Player Report"):
+    eventsdf=eventloader("test.bz2")
     players = eventsdf["playerName"].unique().tolist()
     players = [x for x in players if str(x) != 'nan']
     st.sidebar.header('Player Input Tab')
@@ -293,6 +293,7 @@ if(selected_viz_type=="Match Report"):
             if (matchDD[i]['label'] == label):
                 a = matchDD[i]['value']
         return (a)
+    eventsdf=eventloader("test.bz2")    
     team_plot_data = eventsdf[eventsdf["matchId"] == matchId_giver(selected_match)]
     avgdfh = avg_dfgetter(team_plot_data, "h")
     avgdfa = avg_dfgetter(team_plot_data, "a")
