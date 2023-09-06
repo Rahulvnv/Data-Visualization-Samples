@@ -309,17 +309,18 @@ if(selected_viz_type=="Match Report"):
     passes = team_plot_data[team_plot_data["type"] == "Pass"]
     eventsh = passes[passes["h_a"] == "h"]
     eventsa = passes[passes["h_a"] == "a"]
+    tph=team_plot_data[team_plot_data['h_a']=='h']
+    tpa=team_plot_data[team_plot_data['h_a']=='a']
     pitch = mps.VerticalPitch(line_color="white", pitch_color="black", line_zorder=2, pitch_type='opta')
     fig1, axs = pitch.grid(nrows=2, ncols=3, title_height=0.1, axis=False, grid_width=0.9, figheight=30)
     fig1.set_facecolor("black")
     MIN_TRANSPARENCY = 0.3
-
-    pitch.arrows(eventsh[(eventsh["type"] == "Pass") &(eventsh["endX"]>eventsh["x"])]["x"], eventsh[(eventsh["type"] == "Pass") &(eventsh["endX"]>eventsh["x"])]["y"],
-                 eventsh[(eventsh["type"] == "Pass") &(eventsh["endX"]>eventsh["x"])]["endX"], eventsh[(eventsh["type"] == "Pass") &(eventsh["endX"]>eventsh["x"])]["endY"],
-                 color="#BF3EFF", ax=axs["pitch"][0][0])
-    pitch.arrows(eventsa[(eventsa["type"] == "Pass") &(eventsa["endX"]>eventsa["x"])]["x"], eventsa[(eventsa["type"] == "Pass") &(eventsa["endX"]>eventsa["x"])]["y"],
-                 eventsa[(eventsa["type"] == "Pass") &(eventsa["endX"]>eventsa["x"])]["endX"], eventsa[(eventsa["type"] == "Pass") &(eventsa["endX"]>eventsa["x"])]["endY"],
-                 color="#BF3EFF", ax=axs["pitch"][1][0])
+    shotdatah=tph[tph["type"].isin(shots+goals)]
+    shotdataa=tpa[tpa["type"].isin(shots+goals)]
+    pitch.scatter(shotdatah[shotdatah["type"].isin(shots)]["x"],shotdatah[shotdatah["type"].isin(shots)]["y"],s=300,ax=axs["pitch"][0][2],color="red",edgecolor="black",label="Shot")
+    pitch.scatter(shotdatah[shotdatah["type"].isin(goals)]["x"],shotdatah[shotdatah["type"].isin(goals)]["y"],marker="football",c="white",edgecolor="black",s=300,ax=axs["pitch"][0][2],label="Goal")   
+    pitch.scatter(shotdataa[shotdataa["type"].isin(shots)]["x"],shotdataa[shotdataa["type"].isin(shots)]["y"],s=300,ax=axs["pitch"][1][2],color="red",edgecolor="black",label="Shot")
+    pitch.scatter(shotdataa[shotdataa["type"].isin(goals)]["x"],shotdataa[shotdataa["type"].isin(goals)]["y"],marker="football",c="white",edgecolor="black",s=300,ax=axs["pitch"][1][2],label="Goal")          
     bins = (6, 4)
     bs_heatmap1 = pitch.bin_statistic(eventsh[eventsh["type"] == "Pass"]["x"], eventsh[eventsh["type"] == "Pass"]["y"],
                                       statistic='count', bins=bins)
@@ -340,42 +341,42 @@ if(selected_viz_type=="Match Report"):
     ws = pmergeh["width"].values.tolist()
     ws = [i * 10 for i in ws]
     pitch.lines(pmergeh["x"], pmergeh["y"], pmergeh["endx"], pmergeh["endy"], lw=ws, color=pmergeh['alpha'], zorder=1,
-                ax=axs["pitch"][0][2])
+                ax=axs["pitch"][0][0])
     ws1 = pmergea["width"].values.tolist()
     ws1 = [i * 10 for i in ws1]
     pitch.lines(pmergea["x"], pmergea["y"], pmergea["endx"], pmergea["endy"], lw=ws1, color=pmergea['alpha'], zorder=1,
-                ax=axs["pitch"][1][2])
+                ax=axs["pitch"][1][0])
     for i in range(len(lineuph)):
         pitch.scatter(avgdfh[avgdfh["playerName"] == lineuph[i]]["x"],
-                      avgdfh[avgdfh["playerName"] == lineuph[i]]["y"], s=1000, color="red", ax=axs["pitch"][0][2])
+                      avgdfh[avgdfh["playerName"] == lineuph[i]]["y"], s=1000, color="red", ax=axs["pitch"][0][0])
         try:
             pitch.annotate(lineuph[i].split(" ", 1)[1], xy=(
                 avgdfh[avgdfh["playerName"] == lineuph[i]]["x"] - 2, avgdfh[avgdfh["playerName"] == lineuph[i]]["y"]),
-                           c='white', va='center', ha='center', ax=axs["pitch"][0][2], fontsize=22)
+                           c='white', va='center', ha='center', ax=axs["pitch"][0][0], fontsize=22)
         except:
             pitch.annotate(lineuph[i], xy=(
                 avgdfh[avgdfh["playerName"] == lineuph[i]]["x"] - 2, avgdfh[avgdfh["playerName"] == lineuph[i]]["y"]),
-                           c='white', va='center', ha='center', ax=axs["pitch"][0][2], fontsize=22)
+                           c='white', va='center', ha='center', ax=axs["pitch"][0][0], fontsize=22)
     for i in range(len(lineupa)):
         pitch.scatter(avgdfa[avgdfa["playerName"] == lineupa[i]]["x"],
-                      avgdfa[avgdfa["playerName"] == lineupa[i]]["y"], s=1000, color="red", ax=axs["pitch"][1][2])
+                      avgdfa[avgdfa["playerName"] == lineupa[i]]["y"], s=1000, color="red", ax=axs["pitch"][1][0])
         try:
             pitch.annotate(lineupa[i].split(" ", 1)[1], xy=(
                 avgdfa[avgdfa["playerName"] == lineupa[i]]["x"] - 3, avgdfa[avgdfa["playerName"] == lineupa[i]]["y"]),
-                           c='white', va='center', ha='center', ax=axs["pitch"][1][2], fontsize=22)
+                           c='white', va='center', ha='center', ax=axs["pitch"][1][0], fontsize=22)
         except:
             pitch.annotate(lineupa[i], xy=(
                 avgdfa[avgdfa["playerName"] == lineupa[i]]["x"] - 3, avgdfa[avgdfa["playerName"] == lineupa[i]]["y"]),
-                           c='white', va='center', ha='center', ax=axs["pitch"][1][2], fontsize=22)
-    axs["pitch"][0][0].set_title(team_plot_data["home_team"].unique()[0] + " Progressive Passes", color="white", fontsize=30)
+                           c='white', va='center', ha='center', ax=axs["pitch"][1][0], fontsize=22)
+    axs["pitch"][0][2].set_title(team_plot_data["home_team"].unique()[0] + " Shots Map", color="white", fontsize=30)
     axs["pitch"][0][1].set_title(team_plot_data["home_team"].unique()[0] + " Pass Flow Plot", color="white",
                                  fontsize=30)
-    axs["pitch"][0][2].set_title(team_plot_data["home_team"].unique()[0] + " \nPlayers Avg. Positions & Network",
+    axs["pitch"][0][0].set_title(team_plot_data["home_team"].unique()[0] + " \nPlayers Avg. Positions & Network",
                                  color="white", fontsize=30)
-    axs["pitch"][1][0].set_title(team_plot_data["away_team"].unique()[0] + " Progressive Passes", color="white", fontsize=30)
+    axs["pitch"][1][2].set_title(team_plot_data["away_team"].unique()[0] + " Shots Map", color="white", fontsize=30)
     axs["pitch"][1][1].set_title(team_plot_data["away_team"].unique()[0] + " Pass Flow Plot", color="white",
                                  fontsize=30)
-    axs["pitch"][1][2].set_title(team_plot_data["away_team"].unique()[0] + " Players Avg. Positions & Network",
+    axs["pitch"][1][0].set_title(team_plot_data["away_team"].unique()[0] + " Players Avg. Positions & Network",
                                  color="white", fontsize=30)
     title = axs['title'].text(0.5, 1,
                               team_plot_data["home_team"].unique()[0] + ' vs ' + team_plot_data["away_team"].unique()[
