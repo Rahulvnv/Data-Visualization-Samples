@@ -503,7 +503,7 @@ if(selected_viz_type=="Match Report"):
     alogo = Image.open("Logos/" + team_plot_data["away_team"].unique()[0] + ".png")
     add_image(hlogo, fig1, left=0.2, bottom=0.865, width=0.2, height=0.05)
     add_image(alogo, fig1, left=0.6, bottom=0.865, width=0.2, height=0.05)
-    st.pyplot(mreport)
+    st.pyplot(fig1,axs)
 
 
 
