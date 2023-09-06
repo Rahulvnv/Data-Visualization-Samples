@@ -496,7 +496,7 @@ if(selected_viz_type=="Match Report"):
     axs["pitch"][1][2].set_title(team_plot_data["away_team"].unique()[0] + " Players Avg. Positions & Network",
                                  color="white", fontsize=30)
     title = axs['title'].text(0.5, 1,
-                              team_plot_data["home_team"].unique()[0] + team_plot_data['ftScore'].unique().tolist()[0].split(':',2)[0]+ '-' +team_plot_data['ftScore'].unique().tolist()[0].split(':',2)[1] ' vs ' + team_plot_data["away_team"].unique()[
+                              team_plot_data["home_team"].unique()[0] + team_plot_data['ftScore'].unique().tolist()[0].split(':',2)[0]+ '-' +team_plot_data['ftScore'].unique().tolist()[0].split(':',2)[1] + team_plot_data["away_team"].unique()[
                                   0] + ' Match Report 23/24 (made by @Rahulvn5)',
                               ha='center', va='center', fontsize=40, color='white', weight="bold")
     hlogo = Image.open("C:/Users/Rahul/Logos/Serie A teams/" + team_plot_data["home_team"].unique()[0] + ".png")
