@@ -168,7 +168,6 @@ passes['y2_bin'] = pd.cut(passes['endY'], bins=xT_rows, labels=False)
 passes['start_zone_value'] = passes[['x1_bin', 'y1_bin']].apply(lambda x: xT[x[1]][x[0]], axis=1)
 passes['end_zone_value'] = passes[['x2_bin', 'y2_bin']].apply(lambda x: xT[x[1]][x[0]], axis=1)
 passes['xT'] = passes['end_zone_value'] - passes['start_zone_value']
-passes=pd.concat([passes,carr])
 options=["Match Report",'Player Report']
 st.sidebar.header('Choose Viz Type- Player Report,Match Report')
 selected_viz_type = st.sidebar.selectbox('Viz',options)
@@ -561,102 +560,59 @@ if(selected_viz_type=="Player Report"):
         mins=mins+eves['minute'].max()
     hal2=carr[carr['playerName']==selected_player]
     hal3=pd.concat([hal1,hal2])
-    pitch = mps.VerticalPitch(line_color="white", pitch_color="black", line_zorder=2, pitch_type='opta')
-    fig, axs = pitch.grid(nrows=2, ncols=3, title_height=0.1, axis=False, grid_width=1, figheight=30)
-    pitch.lines(0, 100, 100, 100, ax=axs['pitch'][0][0], color='black')
-    pitch.lines(0, 0, 100, 0, ax=axs['pitch'][0][0], color='black')
-    pitch.lines(100, 100, 100, 0, ax=axs['pitch'][0][0], color='black')
-    pitch.lines(50, 100, 50, 0, ax=axs['pitch'][0][0], color='black')
-    pitch.lines(0, 100, 0, 0, ax=axs['pitch'][0][0], color='black')
-    import matplotlib.patches as mlp
-    axs['pitch'][0][0].add_artist(mlp.Circle((50, 50), 15, color='black', ec="none", zorder=2))
-    axs['pitch'][0][0].add_artist(mlp.Rectangle((80, 80), -60, 20, color='black', ec="none", zorder=2))
-    axs['pitch'][0][0].add_artist(mlp.Rectangle((80, 0), -60, 20, color='black', ec="none", zorder=2))
-    pitch.lines(0, 100, 100, 100, ax=axs['pitch'][1][0], color='black')
-    pitch.lines(0, 0, 100, 0, ax=axs['pitch'][1][0], color='black')
-    pitch.lines(100, 100, 100, 0, ax=axs['pitch'][1][0], color='black')
-    pitch.lines(50, 100, 50, 0, ax=axs['pitch'][1][0], color='black')
-    pitch.lines(0, 100, 0, 0, ax=axs['pitch'][1][0], color='black')
-    axs['pitch'][1][0].add_artist(mlp.Circle((50, 50), 15, color='black', ec="none", zorder=2))
-    axs['pitch'][1][0].add_artist(mlp.Rectangle((80, 80), -60, 20, color='black', ec="none", zorder=2))
-    axs['pitch'][1][0].add_artist(mlp.Rectangle((80, 0), -60, 20, color='black', ec="none", zorder=2))
-    fig.set_facecolor("black")
-    axs["pitch"][0][0].text(x=45, y=110, s='Player Information',
-                            size=25, color='white',
-                            va='center', ha='center', weight='bold')
-    axs["pitch"][0][0].text(x=45, y=75, s='Name: ' + selected_player,
-                            size=25, color='white',va='center', ha='center',weight='bold')
-    axs["pitch"][0][0].text(x=45, y=65, s='Club:' + team,
-                            size=25, color='black',
-                            va='center', ha='center', weight='bold')
-    axs["pitch"][0][0].text(x=45, y=55, s='Mins Played =' + str(mins),
-                            size=25, color='black',
-                            va='center', ha='center', weight='bold')
     import cmasher as cmr
     import matplotlib.patheffects as path_effects
-
-    bin_statistic1 = pitch.bin_statistic_positional(hal3[hal3['xT'] > 0]['x'], hal3[hal3['xT'] > 0]['y'],
-                                                    statistic='count',
-                                                    positional='full', normalize=True)
+    pitch=mps.VerticalPitch(line_color="white", pitch_color="black", line_zorder=2, pitch_type='opta') 
+    fig, axs = pitch.grid(nrows=2, ncols=3, title_height=0.1, axis=False, grid_width=0.9, figheight=17)
+    fig.set_facecolor("black")
+    pitch.arrows(hal1[hal1['endX']>hal1['x']]['x'],hal1[hal1['endX']>hal1['x']]['y'],
+                 hal1[hal1['endX']>hal1['x']]['endX'],hal1[hal1['endX']>hal1['x']]['endY'],color='#C1FFC1",ax=axs['pitch'][0][0])
+    pitch.lines(hal2[hal2['endX']>hal2['x']]['x'],hal2[hal2['endX']>hal2['x']]['y'],
+                 hal2[hal2['endX']>hal2['x']]['endX'],hal2[hal2['endX']>hal2['x']]['endY'],comet=True,color='#FF1493',ax=axs['pitch'][0][1])
+    shotdata=hal[hal["type"].isin(shots+goals)]
+    pitch.scatter(shotdata[shotdata["type"].isin(shots)]["x"],shotdata[shotdata["type"].isin(shots)]["y"],
+                      s=600,ax=axs["pitch"][0][2],color="red",edgecolor="black",label="Shot")
+    pitch.scatter(shotdata[shotdata["type"].isin(goals)]["x"],shotdata[shotdata["type"].isin(goals)]["y"],marker="football",c="white",edgecolor="black",
+                      s=600,ax=axs["pitch"][0][2],label="Goal")          
+    bin_statistic1 = pitch.bin_statistic_positional(hal1[hal1['xT']>0]['x'],hal1[hal1['xT']>0]['y'], statistic='count',
+                                                 positional='full', normalize=True)
     pitch.heatmap_positional(bin_statistic1, ax=axs['pitch'][1][2], cmap='Blues', edgecolors='black')
     path_eff = [path_effects.Stroke(linewidth=3, foreground='black'),
                 path_effects.Normal()]
     labels = pitch.label_heatmap(bin_statistic1, color='white', fontsize=18,
                                  ax=axs['pitch'][1][2], ha='center', va='center',
                                  str_format='{:.0%}', path_effects=path_eff)
-    pitch.kdeplot(hal[hal['type'].isin(def_actions)]['x'], hal[hal['type'].isin(def_actions)]['y'], fill=True,
-                  cmap=cmr.voltage_r, ax=axs['pitch'][1][1], levels=100)
-    succ = 0
-    unsucc = 0
-    hal = hal[hal['passCorner'] == False]
-    list1 = hal[hal['type'] == 'BallRecovery'].index.tolist()
+    pitch.arrows(hal[hal['assist']==True]['x'],hal[hal['assist']==True]['y'],
+                hal[hal['assist']==True]['endX'],hal[hal['assist']==True]['endY'],ax=axs['pitch'][0][1],color='red',label='Assist',width=6)
+    hull = pitch.convexhull(passes[passes['passCorner']==False].x, passes[passes['passCorner']==False].y)
+    poly = pitch.polygon(hull, ax=axs['pitch'][1][0], edgecolor='cornflowerblue', facecolor='cornflowerblue', alpha=0.3)
+    scatter = pitch.scatter(df.x, df.y, ax=axs['pitch'][1][0], edgecolor='black', facecolor='cornflowerblue')
+    pitch.kdeplot(hal[hal['type'].isin(def_actions)]['x'],hal[hal['type'].isin(def_actions)]['y'],fill=True,cmap=cmr.voltage_r,ax=axs['pitch'][1][1],levels=100)
+    succ=0
+    unsucc=0
+    hal=hal[hal['passCorner']==False]
+    list1=hal[hal['type']=='BallRecovery'].index.tolist()
     for i in list1:
-        k = i + 1
+        k=i+1
         try:
-            if ((hal[hal.index == k]['type'].unique().tolist()[0] == 'Pass') & (
-                    hal[hal.index == k]['outcomeType'].unique().tolist()[0] == 'Successful')):
-                pitch.arrows(hal[hal.index == k]['x'], hal[hal.index == k]['y'],
-                             hal[hal.index == k]['endX'], hal[hal.index == k]['endY'], color='#7CFC00', width=3.4,
-                             ax=axs['pitch'][1][1], label='Post Recovery Successful Pass')
-                if (succ < 1):
+            if((hal[hal.index==k]['type'].unique().tolist()[0]=='Pass')&(hal[hal.index==k]['outcomeType'].unique().tolist()[0]=='Successful')):
+                pitch.arrows(hal[hal.index==k]['x'],hal[hal.index==k]['y'],
+                            hal[hal.index==k]['endX'],hal[hal.index==k]['endY'],color='#7CFC00',width=3.4,ax=axs['pitch'][1][1],label='Post Recovery Successful Pass')
+                if(succ<1):
                     axs['pitch'][1][1].legend(loc='upper left')
-                succ += 1
-            elif ((hal[hal.index == k]['type'].unique().tolist()[0] == 'Pass') & (
-                    hal[hal.index == k]['outcomeType'].unique().tolist()[0] == 'Unsuccessful')):
-                unsucc += 1
-
+                succ+=1
+            elif((hal[hal.index==k]['type'].unique().tolist()[0]=='Pass')&(hal[hal.index==k]['outcomeType'].unique().tolist()[0]=='Unsuccessful')):
+                unsucc+=1
+    
         except:
-            continue
-    axs["pitch"][1][1].set_title('Def. Actions Heatmap & Post Recovery Passes' + '\n' + 'Ball Retention rate % =' + str(
-        round((succ / (succ + unsucc) * 100), 2)), color='black', weight='bold', size=20)
-    shotdata = hal[hal["type"].isin(shots + goals)]
-    pitch.scatter(shotdata[shotdata["type"].isin(shots)]["x"], shotdata[shotdata["type"].isin(shots)]["y"],
-                  s=600, ax=axs["pitch"][0][2], color="red", edgecolor="black", label="Shot")
-    pitch.scatter(shotdata[shotdata["type"].isin(goals)]["x"], shotdata[shotdata["type"].isin(goals)]["y"],
-                  marker="football", c="white", edgecolor="black",
-                  s=600, ax=axs["pitch"][0][2], label="Goal")
-    txt = axs["pitch"][0][2].text(x=50, y=30
-                                  , s=' Total Shots=' + '38' + '\n npxG Accumulated=0.16 Per90 \n Goals Scored=5',
-                                  size=20, color='black',
-                                  va='center', ha='center', weight='bold')
-    pitch.arrows(hal[hal['assist'] == True]['x'], hal[hal['assist'] == True]['y'],
-                 hal[hal['assist'] == True]['endX'], hal[hal['assist'] == True]['endY'], ax=axs['pitch'][0][1],
-                 color='red', label='Assist', width=6)
-    carr1=hal2
-    pitch.lines(carr1[(carr1['endX'] - carr1['x']) > 10]['x'], carr1[(carr1['endX'] - carr1['x']) > 10]['y'],
-                carr1[(carr1['endX'] - carr1['x']) > 10]['endX'],
-                carr1[(carr1['endX'] - carr1['x']) > 10]['endY'], ax=axs['pitch'][0][1], comet=True, color='#BF3EFF',
-                linestyle='--')
-    pitch.scatter(carr1[(carr1['endX'] - carr1['x']) > 10]['endX'], carr1[(carr1['endX'] - carr1['x']) > 10]['endY'],
-                  color='#BF3EFF', s=100, ax=axs['pitch'][0][1])
-    axs["pitch"][1][2].set_title('Expected Threat Positional Heatmap', color='black', weight='bold', size=25)
-    axs["pitch"][0][1].set_title('Progressive Carries & Assists', color='black', weight='bold', size=25)
-    axs["pitch"][0][2].set_title('Shots & Goals', color='black', weight='bold', size=25)
-    axs['pitch'][0][1].legend(loc='upper left')
-    juv1 = Image.open("Logos/" + team + ".png")
-    add_image(juv1, fig, left=0.08, bottom=0.7, width=0.22, height=0.16)
-    axs['title'].text(0.14, 0.6, selected_player+ " Player Report for Season 2023/24 (made by:@Rahulvn5)", color="black",
-                      weight='bold', fontsize=30)
+            continue   
+    axs["pitch"][1][2].set_title('Expected Threat Positional Heatmap',color='white',weight='bold',size=25)
+    axs["pitch"][0][1].set_title('Progressive Carries & Assists',color='white',weight='bold',size=25)
+    axs["pitch"][0][2].set_title('Shots & Goals',color='white',weight='bold',size=25) 
+    axs["pitch"][0][0].set_title('Progressive Passes',color='white',weight='bold',size=25)
+    axs["pitch"][1][0].set_title('Actions Convex Hull',color='white',weight='bold',size=25) 
+    axs["pitch"][1][1].set_title('Post Recovery Passes and \nDef Actions Heatmap,color='white',weight='bold',size=25) 
+    axs['title'].text(0.14,0.6,selected_player+ 'Player report for 23/24 (made by:@Rahulvn5)",color="white",weight='bold',fontsize=30) 
     st.pyplot(fig, axs)
 if(selected_viz_type=="Match Report"):
     matchDD = [{'label': row["home_team"] + " - " + row["away_team"],
