@@ -31,7 +31,6 @@ def seconds_passed(min1,sec1, min2,sec2):
     elif(min1!=min2):
         x=(60*min1+sec1)-(60*min2+sec2)
         return x
-@st.cache(suppress_st_warning=True,ttl=6*3600)
 def insert_ball_carries(events_df, min_carry_length=3, max_carry_length=60, min_carry_duration=1, max_carry_duration=10):
     """ Add carry events to whoscored events dataframe
     Function to read a whoscored-style events dataframe (single or multiple matches) and return an event dataframe
