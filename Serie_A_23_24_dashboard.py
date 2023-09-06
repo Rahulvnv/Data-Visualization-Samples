@@ -373,9 +373,9 @@ if(selected_viz_type=="Player Report"):
                                  str_format='{:.0%}', path_effects=path_eff)
     pitch.arrows(hal[hal['assist']==True]['x'],hal[hal['assist']==True]['y'],
                 hal[hal['assist']==True]['endX'],hal[hal['assist']==True]['endY'],ax=axs['pitch'][0][1],color='red',label='Assist',width=6)
-    hull = pitch.convexhull(passes[passes['passCorner']==False].x, passes[passes['passCorner']==False].y)
+    hull = pitch.convexhull(hal[hal['passCorner']==False].x, hal[hal['passCorner']==False].y)
     poly = pitch.polygon(hull, ax=axs['pitch'][1][0], edgecolor='cornflowerblue', facecolor='cornflowerblue', alpha=0.3)
-    scatter = pitch.scatter(passes[passes['passCorner']==False].x, passes[passes['passCorner']==False].y, ax=axs['pitch'][1][0], edgecolor='black', facecolor='cornflowerblue')
+    scatter = pitch.scatter(hal[hal['passCorner']==False].x, hal[hal['passCorner']==False].y, ax=axs['pitch'][1][0], edgecolor='black', facecolor='cornflowerblue')
     pitch.kdeplot(hal[hal['type'].isin(def_actions)]['x'],hal[hal['type'].isin(def_actions)]['y'],fill=True,cmap=cmr.voltage_r,ax=axs['pitch'][1][1],levels=100)
     succ=0
     unsucc=0
