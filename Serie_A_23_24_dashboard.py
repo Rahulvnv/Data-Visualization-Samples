@@ -30,8 +30,7 @@ def seconds_passed(min1,sec1, min2,sec2):
         return sec1-sec2
     elif(min1!=min2):
         x=(60*min1+sec1)-(60*min2+sec2)
-        return x  
-@st.cache(suppress_st_warning=True,ttl=6*3600)        
+        return x     
 def carryloader(path):
     carries=pd.read_pickle(path,compression='bz2')
     return carries
