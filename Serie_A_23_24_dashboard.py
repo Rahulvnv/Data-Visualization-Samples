@@ -20,6 +20,7 @@ def eventloader(path):
     events=pd.read_pickle(path,compression='bz2')
     df = pd.read_csv("Serie A fixtures.csv")
     return events
+eventsdf=eventloader("test.bz2")    
 df = pd.read_csv("Serie A fixtures.csv")
 xT = pd.read_csv("xT_Grid.csv", header=None)
 xT = np.array(xT)
@@ -29,7 +30,8 @@ def seconds_passed(min1,sec1, min2,sec2):
         return sec1-sec2
     elif(min1!=min2):
         x=(60*min1+sec1)-(60*min2+sec2)
-        return x     
+        return x 
+@st.cache(suppress_st_warning=True,ttl=60,max_entries=5)        
 def carryloader(path):
     carries=pd.read_pickle(path,compression='bz2')
     return carries
@@ -201,7 +203,6 @@ def pass_network_dfgetter(events_df,k):
     passmerge['alpha'] = color.tolist()
     return passmerge
 if(selected_viz_type=="Player Report"):
-    eventsdf=eventloader("test.bz2")
     passes=eventsdf[eventsdf["type"]=="Pass"]
     passes['x1_bin'] = pd.cut(passes['x'], bins=xT_cols, labels=False)
     passes['y1_bin'] = pd.cut(passes['y'], bins=xT_rows, labels=False)
