@@ -34,7 +34,6 @@ def seconds_passed(min1,sec1, min2,sec2):
 def carryloader(path):
     carries=pd.read_pickle(path,compression='bz2')
     return carries
-carr=carryloader("carries.bz2")
 passes=eventsdf[eventsdf["type"]=="Pass"]
 passes['x1_bin'] = pd.cut(passes['x'], bins=xT_cols, labels=False)
 passes['y1_bin'] = pd.cut(passes['y'], bins=xT_rows, labels=False)
@@ -226,6 +225,7 @@ if(selected_viz_type=="Player Report"):
     for i in mids:
         eves=hal[hal['matchId']==i]
         mins=mins+eves['minute'].max()
+    carr=carryloader("carries.bz2")    
     hal2=carr[carr['playerName']==selected_player]
     import cmasher as cmr
     import matplotlib.patheffects as path_effects
