@@ -15,7 +15,7 @@ goals=['Goal']
 def_actions=['BallRecovery','Clearance','Tackle','Challenge','Interception','BlockedPass']
 takeon=["TakeOn"]
 touches=["BallTouch"]
-@st.cache(suppress_st_warning=True,ttl=360,max_entries=10)
+@st.cache(suppress_st_warning=True,ttl=60,max_entries=10)
 def eventloader(path):
     events=pd.read_pickle(path,compression='bz2')
     df = pd.read_csv("Serie A fixtures.csv")
