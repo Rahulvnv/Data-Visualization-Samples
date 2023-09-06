@@ -401,7 +401,7 @@ if(selected_viz_type=="Player Report"):
     axs["pitch"][0][0].set_title('Progressive Passes',color='white',weight='bold',size=15)
     axs["pitch"][1][0].set_title('Actions Convex Hull',color='white',weight='bold',size=15) 
     axs["pitch"][1][1].set_title('Post Recovery Passes and \nDef Actions Heatmap',color='white',weight='bold',size=15) 
-    axs['title'].text(0.1,0.6,selected_player+ "Player report for 23/24 (made by:@Rahulvn5)",color="white",weight='bold',fontsize=30) 
+    axs['title'].text(0.1,0.6,selected_player+ " Player report for 23/24 (made by:@Rahulvn5)",color="white",weight='bold',fontsize=30) 
     st.pyplot(fig, axs)
 if(selected_viz_type=="Match Report"):
     matchDD = [{'label': row["home_team"] + " - " + row["away_team"],
