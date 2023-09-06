@@ -31,10 +31,6 @@ def seconds_passed(min1,sec1, min2,sec2):
     elif(min1!=min2):
         x=(60*min1+sec1)-(60*min2+sec2)
         return x 
-@st.cache(suppress_st_warning=True,ttl=60,max_entries=5)        
-def carryloader(path):
-    carries=pd.read_pickle(path,compression='bz2')
-    return carries
 options=["Match Report",'Player Report']
 st.sidebar.header('Choose Viz Type- Player Report,Match Report')
 selected_viz_type = st.sidebar.selectbox('Viz',options)
@@ -226,7 +222,7 @@ if(selected_viz_type=="Player Report"):
     for i in mids:
         eves=hal[hal['matchId']==i]
         mins=mins+eves['minute'].max()
-    carr=carryloader("carries.bz2")    
+    carr=hal[hal['type']=='Carry']    
     hal2=carr[carr['playerName']==selected_player]
     import cmasher as cmr
     import matplotlib.patheffects as path_effects
