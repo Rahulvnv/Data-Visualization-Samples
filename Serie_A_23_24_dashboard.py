@@ -242,6 +242,7 @@ if(selected_viz_type=="Player Report"):
     fig.set_facecolor("black")
     pitch.arrows(hal1[hal1['endX']>hal1['x']]['x'],hal1[hal1['endX']>hal1['x']]['y'],hal1[hal1['endX']>hal1['x']]['endX'],hal1[hal1['endX']>hal1['x']]['endY'],color="#C1FFC1",ax=axs['pitch'][0][0],width=3)
     pitch.lines(hal2[hal2['endX']>hal2['x']]['x'],hal2[hal2['endX']>hal2['x']]['y'],hal2[hal2['endX']>hal2['x']]['endX'],hal2[hal2['endX']>hal2['x']]['endY'],comet=True,color='#FF1493',ax=axs['pitch'][0][1])
+    pitch.scatter(hal2[hal2['endX']>hal2['x']]['endX'],hal2[hal2['endX']>hal2['x']]['endY'],s=80,color='#FF1493',ax=axs['pitch'][0][1])
     shotdata=hal[hal["type"].isin(shots+goals)]
     pitch.scatter(shotdata[shotdata["type"].isin(shots)]["x"],shotdata[shotdata["type"].isin(shots)]["y"],s=300,ax=axs["pitch"][0][2],color="red",edgecolor="black",label="Shot")
     pitch.scatter(shotdata[shotdata["type"].isin(goals)]["x"],shotdata[shotdata["type"].isin(goals)]["y"],marker="football",c="white",edgecolor="black",s=300,ax=axs["pitch"][0][2],label="Goal")          
@@ -382,7 +383,7 @@ if(selected_viz_type=="Match Report"):
                               team_plot_data["home_team"].unique()[0] + ' vs ' + team_plot_data["away_team"].unique()[
                                   0] + ' Match Report 23/24 (made by @Rahulvn5)',
                               ha='center', va='center', fontsize=40, color='white', weight="bold")
-    title = axs['title'].text(0.5, 0.65,
+    title = axs['title'].text(0.5, 0.6,
                                  team_plot_data['ftScore'].unique().tolist()[0].split(':',2)[0]+ '-' +team_plot_data['ftScore'].unique().tolist()[0].split(':',2)[1],
                               ha='center', va='center', fontsize=40, color='white', weight="bold")
     hlogo = Image.open("Logos/" + team_plot_data["home_team"].unique()[0] + ".png")
