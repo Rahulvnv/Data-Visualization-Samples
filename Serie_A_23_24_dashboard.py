@@ -33,14 +33,6 @@ def seconds_passed(min1,sec1, min2,sec2):
 def carryloader(path):
     carries=pd.read_pickle(path,compression='bz2')
     return carries
-passes=eventsdf[eventsdf["type"]=="Pass"]
-passes['x1_bin'] = pd.cut(passes['x'], bins=xT_cols, labels=False)
-passes['y1_bin'] = pd.cut(passes['y'], bins=xT_rows, labels=False)
-passes['x2_bin'] = pd.cut(passes['endX'], bins=xT_cols, labels=False)
-passes['y2_bin'] = pd.cut(passes['endY'], bins=xT_rows, labels=False)
-passes['start_zone_value'] = passes[['x1_bin', 'y1_bin']].apply(lambda x: xT[x[1]][x[0]], axis=1)
-passes['end_zone_value'] = passes[['x2_bin', 'y2_bin']].apply(lambda x: xT[x[1]][x[0]], axis=1)
-passes['xT'] = passes['end_zone_value'] - passes['start_zone_value']
 options=["Match Report",'Player Report']
 st.sidebar.header('Choose Viz Type- Player Report,Match Report')
 selected_viz_type = st.sidebar.selectbox('Viz',options)
@@ -210,6 +202,14 @@ def pass_network_dfgetter(events_df,k):
     return passmerge
 if(selected_viz_type=="Player Report"):
     eventsdf=eventloader("test.bz2")
+    passes=eventsdf[eventsdf["type"]=="Pass"]
+    passes['x1_bin'] = pd.cut(passes['x'], bins=xT_cols, labels=False)
+    passes['y1_bin'] = pd.cut(passes['y'], bins=xT_rows, labels=False)
+    passes['x2_bin'] = pd.cut(passes['endX'], bins=xT_cols, labels=False)
+    passes['y2_bin'] = pd.cut(passes['endY'], bins=xT_rows, labels=False)
+    passes['start_zone_value'] = passes[['x1_bin', 'y1_bin']].apply(lambda x: xT[x[1]][x[0]], axis=1)
+    passes['end_zone_value'] = passes[['x2_bin', 'y2_bin']].apply(lambda x: xT[x[1]][x[0]], axis=1)
+    passes['xT'] = passes['end_zone_value'] - passes['start_zone_value']
     players = eventsdf["playerName"].unique().tolist()
     players = [x for x in players if str(x) != 'nan']
     st.sidebar.header('Player Input Tab')
