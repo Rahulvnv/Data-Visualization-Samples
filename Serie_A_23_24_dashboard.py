@@ -247,7 +247,7 @@ if(selected_viz_type=="Player Report"):
                                  ax=axs['pitch'][1][2], ha='center', va='center',
                                  str_format='{:.0%}', path_effects=path_eff)
     pitch.arrows(hal[hal['assist']==True]['x'],hal[hal['assist']==True]['y'],
-                hal[hal['assist']==True]['endX'],hal[hal['assist']==True]['endY'],ax=axs['pitch'][0][1],color='cyan',label='Assist',width=6,label='Assist')
+                hal[hal['assist']==True]['endX'],hal[hal['assist']==True]['endY'],ax=axs['pitch'][0][1],color='cyan',label='Assist',width=6)
     hull = pitch.convexhull(hal[hal['passCorner']==False].x, hal[hal['passCorner']==False].y)
     poly = pitch.polygon(hull, ax=axs['pitch'][1][0], edgecolor='cornflowerblue', facecolor='cornflowerblue', alpha=0.3)
     scatter = pitch.scatter(hal[hal['passCorner']==False].x, hal[hal['passCorner']==False].y, ax=axs['pitch'][1][0], edgecolor='black', facecolor='cornflowerblue')
